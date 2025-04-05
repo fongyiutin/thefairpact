@@ -1,0 +1,1219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>THE FAIR PACT - Ethical Dilemma Mind Map</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        
+        .header {
+            text-align: center;
+            padding: 15px 0;
+            margin-bottom: 20px;
+        }
+        
+        .header h1 {
+            color: #2c3e50;
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            color: #7f8c8d;
+            font-size: 0.95rem;
+        }
+        
+        .content {
+            display: flex;
+            flex: 1;
+            min-height: 500px;
+        }
+        
+        .mindmap-container {
+            flex: 3;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-right: 20px;
+            position: relative;
+            overflow: hidden;
+            min-height: 500px;
+        }
+        
+        .info-panel {
+            flex: 2;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            overflow-y: auto;
+            max-height: 80vh;
+        }
+        
+        /* Mind map styles */
+        .mindmap {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            min-height: 500px;
+            transition: all 0.5s ease;
+        }
+        
+        /* SVG container */
+        .svg-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+            transition: all 0.5s ease;
+        }
+        
+        /* Path styles */
+        .path {
+            fill: none;
+            stroke-width: 2.5px;
+            stroke-linecap: round;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        
+        .the-path {
+            stroke: #3498db;
+        }
+        
+        .fair-path {
+            stroke: #2ecc71;
+        }
+        
+        .pact-path {
+            stroke: #9b59b6;
+        }
+        
+        /* Node styles */
+        .node {
+            position: absolute;
+            padding: 10px 15px;
+            border-radius: 8px;
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+            cursor: pointer;
+            transition: all 0.5s ease;
+            z-index: 10;
+            text-align: center;
+            opacity: 0;
+            pointer-events: none;
+            transform-origin: center center;
+        }
+        
+        .node:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Main node styles */
+        .main-node {
+            background-color: #3498db;
+            font-size: 1.6rem;
+            padding: 12px 20px;
+            z-index: 20;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 1;
+            pointer-events: auto;
+            min-width: 180px;
+        }
+        
+        /* Main node shifted to the left */
+        .main-node.shifted {
+            left: 15%;
+            transform: translate(-50%, -50%);
+        }
+        
+        /* Group node styles */
+        .group-node {
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 100px;
+        }
+        
+        .the-node {
+            background-color: #3498db;
+        }
+        
+        .fair-node {
+            background-color: #2ecc71;
+        }
+        
+        .pact-node {
+            background-color: #9b59b6;
+        }
+        
+        /* Letter node styles */
+        .letter-node {
+            font-size: 1.1rem;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+        }
+        
+        /* Node positions */
+        /* THE group nodes */
+        #the-node {
+            left: 45%;
+            top: 30%;
+        }
+        
+        #t-node {
+            left: 80%;  /* Moved further to the right */
+            top: 15%;
+        }
+        
+        #h-node {
+            left: 80%;  /* Moved further to the right */
+            top: 30%;
+        }
+        
+        #e-node {
+            left: 80%;  /* Moved further to the right */
+            top: 45%;
+        }
+        
+        /* FAIR group nodes */
+        #fair-node {
+            left: 45%;
+            top: 50%;
+        }
+        
+        #f-node {
+            left: 80%;  /* Moved further to the right */
+            top: 35%;
+        }
+        
+        #a1-node {
+            left: 80%;  /* Moved further to the right */
+            top: 45%;
+        }
+        
+        #i-node {
+            left: 80%;  /* Moved further to the right */
+            top: 55%;
+        }
+        
+        #r-node {
+            left: 80%;  /* Moved further to the right */
+            top: 65%;
+        }
+        
+        /* PACT group nodes */
+        #pact-node {
+            left: 45%;
+            top: 70%;
+        }
+        
+        #p-node {
+            left: 80%;  /* Moved further to the right */
+            top: 60%;
+        }
+        
+        #a2-node {
+            left: 80%;  /* Moved further to the right */
+            top: 70%;
+        }
+        
+        #c-node {
+            left: 80%;  /* Moved further to the right */
+            top: 80%;
+        }
+        
+        #t2-node {
+            left: 80%;  /* Moved further to the right */
+            top: 90%;
+        }
+        
+        /* Node labels */
+        .node-label {
+            position: absolute;
+            white-space: nowrap;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 5px 10px;
+            border-radius: 5px;
+            box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+            font-size: 0.9rem;
+            color: #333;
+            font-weight: normal;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 5;
+        }
+        
+        .letter-node:hover + .node-label {
+            opacity: 1;
+        }
+        
+        .active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        
+        /* Info panel styles */
+        .info-title {
+            font-size: 1.6rem;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #eee;
+        }
+        
+        .info-content {
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+        
+        .info-content p {
+            margin-bottom: 12px;
+        }
+        
+        .info-content ul {
+            padding-left: 20px;
+            margin-bottom: 12px;
+        }
+        
+        .info-content li {
+            margin-bottom: 8px;
+        }
+        
+        .keyword {
+            font-weight: bold;
+            color: #3498db;
+        }
+        
+        .the-keyword {
+            color: #3498db;
+        }
+        
+        .fair-keyword {
+            color: #2ecc71;
+        }
+        
+        .pact-keyword {
+            color: #9b59b6;
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        
+        .reset-btn {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background-color: #e0e0e0;
+            color: #333;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 15px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            z-index: 100;
+        }
+        
+        .reset-btn:hover {
+            background-color: #d0d0d0;
+        }
+        
+        /* Mobile responsive design */
+        @media (max-width: 900px) {
+            .content {
+                flex-direction: column;
+            }
+            
+            .mindmap-container {
+                margin-right: 0;
+                margin-bottom: 20px;
+                min-height: 450px;
+            }
+            
+            .info-panel {
+                max-height: 400px;
+            }
+            
+            .main-node {
+                font-size: 1.4rem;
+                padding: 10px 15px;
+                min-width: 150px;
+            }
+            
+            .main-node.shifted {
+                left: 10%;
+                transform: translate(-50%, -50%);
+            }
+            
+            .group-node {
+                font-size: 1.1rem;
+                min-width: 80px;
+            }
+            
+            .letter-node {
+                font-size: 1rem;
+                width: 30px;
+                height: 30px;
+            }
+            
+            /* Adjusted node positions for mobile */
+            #the-node {
+                left: 50%;
+                top: 25%;
+            }
+            
+            #fair-node {
+                left: 50%;
+                top: 50%;
+            }
+            
+            #pact-node {
+                left: 50%;
+                top: 75%;
+            }
+            
+            /* THE group letter nodes */
+            #t-node, #h-node, #e-node {
+                left: 85%;
+            }
+            
+            #t-node { top: 15%; }
+            #h-node { top: 25%; }
+            #e-node { top: 35%; }
+            
+            /* FAIR group letter nodes */
+            #f-node, #a1-node, #i-node, #r-node {
+                left: 85%;
+            }
+            
+            #f-node { top: 40%; }
+            #a1-node { top: 50%; }
+            #i-node { top: 60%; }
+            #r-node { top: 70%; }
+            
+            /* PACT group letter nodes */
+            #p-node, #a2-node, #c-node, #t2-node {
+                left: 85%;
+            }
+            
+            #p-node { top: 65%; }
+            #a2-node { top: 75%; }
+            #c-node { top: 85%; }
+            #t2-node { top: 95%; }
+            
+            /* Label adjustments */
+            .node-label {
+                left: 90% !important;
+                font-size: 0.8rem;
+                padding: 3px 6px;
+                max-width: 150px;
+                text-overflow: ellipsis;
+                overflow: hidden;
+            }
+        }
+        
+        /* Extra small screen adjustments */
+        @media (max-width: 480px) {
+            .mindmap {
+                transform: scale(0.9);
+                transform-origin: center center;
+            }
+            
+            .main-node {
+                font-size: 1.2rem;
+                min-width: 130px;
+            }
+            
+            .main-node.shifted {
+                left: 5%;
+            }
+            
+            .group-node {
+                font-size: 1rem;
+                min-width: 70px;
+                padding: 8px 12px;
+            }
+            
+            .letter-node {
+                font-size: 0.9rem;
+                width: 28px;
+                height: 28px;
+            }
+            
+            .node-label {
+                max-width: 120px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>THE FAIR PACT - Ethical Dilemma Mind Map</h1>
+            <p>Click on nodes to explore the mind map and discover ethical dilemma classifications</p>
+        </div>
+        
+        <div class="content">
+            <div class="mindmap-container">
+                <div class="mindmap" id="mindmap">
+                    <!-- SVG curved connectors -->
+                    <svg class="svg-container" id="svg-container">
+                        <!-- Main to group connectors -->
+                        <path id="main-to-the" class="path the-path"></path>
+                        <path id="main-to-fair" class="path fair-path"></path>
+                        <path id="main-to-pact" class="path pact-path"></path>
+                        
+                        <!-- THE group internal connectors -->
+                        <path id="the-to-t" class="path the-path"></path>
+                        <path id="the-to-h" class="path the-path"></path>
+                        <path id="the-to-e" class="path the-path"></path>
+                        
+                        <!-- FAIR group internal connectors -->
+                        <path id="fair-to-f" class="path fair-path"></path>
+                        <path id="fair-to-a1" class="path fair-path"></path>
+                        <path id="fair-to-i" class="path fair-path"></path>
+                        <path id="fair-to-r" class="path fair-path"></path>
+                        
+                        <!-- PACT group internal connectors -->
+                        <path id="pact-to-p" class="path pact-path"></path>
+                        <path id="pact-to-a2" class="path pact-path"></path>
+                        <path id="pact-to-c" class="path pact-path"></path>
+                        <path id="pact-to-t2" class="path pact-path"></path>
+                    </svg>
+                    
+                    <!-- Main node -->
+                    <div id="main-node" class="node main-node">THE FAIR PACT</div>
+                    
+                    <!-- Group nodes -->
+                    <div id="the-node" class="node group-node the-node">THE</div>
+                    <div id="fair-node" class="node group-node fair-node">FAIR</div>
+                    <div id="pact-node" class="node group-node pact-node">PACT</div>
+                    
+                    <!-- THE group letter nodes -->
+                    <div id="t-node" class="node letter-node the-node">T</div>
+                    <div class="node-label" style="left:85%; top:15%;">Taking things that aren't yours</div>
+                    
+                    <div id="h-node" class="node letter-node the-node">H</div>
+                    <div class="node-label" style="left:85%; top:30%;">Hiding or divulging information</div>
+                    
+                    <div id="e-node" class="node letter-node the-node">E</div>
+                    <div class="node-label" style="left:85%; top:45%;">Engaging in conflicts of interest</div>
+                    
+                    <!-- FAIR group letter nodes -->
+                    <div id="f-node" class="node letter-node fair-node">F</div>
+                    <div class="node-label" style="left:85%; top:35%;">False impressions</div>
+                    
+                    <div id="a1-node" class="node letter-node fair-node">A</div>
+                    <div class="node-label" style="left:85%; top:45%;">Acts of personal decadence</div>
+                    
+                    <div id="i-node" class="node letter-node fair-node">I</div>
+                    <div class="node-label" style="left:85%; top:55%;">Interpersonal abuse</div>
+                    
+                    <div id="r-node" class="node letter-node fair-node">R</div>
+                    <div class="node-label" style="left:85%; top:65%;">Rules violations</div>
+                    
+                    <!-- PACT group letter nodes -->
+                    <div id="p-node" class="node letter-node pact-node">P</div>
+                    <div class="node-label" style="left:85%; top:60%;">Permitting organizational abuse</div>
+                    
+                    <div id="a2-node" class="node letter-node pact-node">A</div>
+                    <div class="node-label" style="left:85%; top:70%;">Aren't true</div>
+                    
+                    <div id="c-node" class="node letter-node pact-node">C</div>
+                    <div class="node-label" style="left:85%; top:80%;">Condoning unethical actions</div>
+                    
+                    <div id="t2-node" class="node letter-node pact-node">T</div>
+                    <div class="node-label" style="left:85%; top:90%;">Taking unfair advantage</div>
+                    
+                    <button id="reset-btn" class="reset-btn">Reset</button>
+                </div>
+            </div>
+            
+            <div class="info-panel">
+                <!-- Initial information -->
+                <div id="main-info">
+                    <h2 class="info-title">THE FAIR PACT Mnemonic</h2>
+                    <div class="info-content">
+                        <p>"THE FAIR PACT" is a powerful mnemonic to help you identify and remember various types of ethical dilemmas. Click on "THE FAIR PACT" in the center to begin exploring the mind map.</p>
+                        <p>This mnemonic is divided into three main parts:</p>
+                        <ul>
+                            <li><strong>"THE"</strong> - Dilemmas related to personal integrity</li>
+                            <li><strong>"FAIR"</strong> - Reminders about fairness, transparency, and respect for others</li>
+                            <li><strong>"PACT"</strong> - Issues related to organizational trust and honesty</li>
+                        </ul>
+                        <p>By remembering this mnemonic, you can more easily identify and address various ethical dilemmas.</p>
+                    </div>
+                </div>
+                
+                <!-- THE group information -->
+                <div id="the-info" class="hidden">
+                    <h2 class="info-title">"THE" - Personal Integrity</h2>
+                    <div class="info-content">
+                        <p>"THE" group addresses ethical dilemmas related to personal integrity, emphasizing the importance of individual behavior and honesty.</p>
+                        <p>This group contains three key types of ethical dilemmas:</p>
+                        <ul>
+                            <li><strong>T</strong> - <span class="keyword the-keyword">Taking</span> things that aren't yours</li>
+                            <li><strong>H</strong> - <span class="keyword the-keyword">Hiding</span> or divulging information</li>
+                            <li><strong>E</strong> - <span class="keyword the-keyword">Engaging</span> in conflicts of interest</li>
+                        </ul>
+                        <p>Click on the letters in the mind map to get more detailed information.</p>
+                    </div>
+                </div>
+                
+                <!-- FAIR group information -->
+                <div id="fair-info" class="hidden">
+                    <h2 class="info-title">"FAIR" - Fairness and Respect</h2>
+                    <div class="info-content">
+                        <p>"FAIR" reminds you of the importance of fairness, transparency, and respect for others, emphasizing ethical behavior in various contexts.</p>
+                        <p>This section includes four key ethical issues:</p>
+                        <ul>
+                            <li><strong>F</strong> - <span class="keyword fair-keyword">False</span> impressions</li>
+                            <li><strong>A</strong> - <span class="keyword fair-keyword">Acts</span> of personal decadence</li>
+                            <li><strong>I</strong> - <span class="keyword fair-keyword">Interpersonal</span> abuse</li>
+                            <li><strong>R</strong> - <span class="keyword fair-keyword">Rules</span> violations</li>
+                        </ul>
+                        <p>Click on the letters in the mind map to get more detailed information.</p>
+                    </div>
+                </div>
+                
+                <!-- PACT group information -->
+                <div id="pact-info" class="hidden">
+                    <h2 class="info-title">"PACT" - Organizational Trust</h2>
+                    <div class="info-content">
+                        <p>"PACT" group focuses on ethical misconduct related to organizational trust and honesty, addressing the maintenance of organizational integrity and responsible behavior.</p>
+                        <p>This group includes four key aspects:</p>
+                        <ul>
+                            <li><strong>P</strong> - <span class="keyword pact-keyword">Permitting</span> organizational abuse</li>
+                            <li><strong>A</strong> - <span class="keyword pact-keyword">Aren't</span> true</li>
+                            <li><strong>C</strong> - <span class="keyword pact-keyword">Condoning</span> unethical actions</li>
+                            <li><strong>T</strong> - <span class="keyword pact-keyword">Taking</span> unfair advantage</li>
+                        </ul>
+                        <p>Click on the letters in the mind map to get more detailed information.</p>
+                    </div>
+                </div>
+                
+                <!-- T letter information -->
+                <div id="t-info" class="hidden">
+                    <h2 class="info-title">T - <span class="keyword the-keyword">Taking</span> things that aren't yours</h2>
+                    <div class="info-content">
+                        <p>This includes <span class="keyword the-keyword">taking</span> or using someone else's property or resources without permission.</p>
+                        <p>Examples:</p>
+                        <ul>
+                            <li>Taking a colleague's office supplies without telling them</li>
+                            <li>Using company resources for personal matters without permission</li>
+                            <li>Appropriating someone else's ideas or work</li>
+                            <li>Theft or embezzlement of funds</li>
+                        </ul>
+                        <p>This type of ethical dilemma involves the basic principles of respecting ownership and personal property.</p>
+                    </div>
+                </div>
+                
+                <!-- H letter information -->
+                <div id="h-info" class="hidden">
+                    <h2 class="info-title">H - <span class="keyword the-keyword">Hiding</span> or divulging information</h2>
+                    <div class="info-content">
+                        <p>This involves inappropriately <span class="keyword the-keyword">hiding</span> information that should be shared, or sharing confidential information that shouldn't be disclosed.</p>
+                        <p>Examples:</p>
+                        <ul>
+                            <li>Concealing product defects or risks</li>
+                            <li>Disclosing confidential or private information</li>
+                            <li>Omitting important details in reports to cover up mistakes</li>
+                            <li>Sharing internal information without authorization</li>
+                        </ul>
+                        <p>This type of ethical dilemma involves balancing honesty, transparency, and confidentiality.</p>
+                    </div>
+                </div>
+                
+                <!-- E letter information -->
+                <div id="e-info" class="hidden">
+                    <h2 class="info-title">E - <span class="keyword the-keyword">Engaging</span> in conflicts of interest</h2>
+                    <div class="info-content">
+                        <p>This refers to <span class="keyword the-keyword">engaging</span> in situations where personal interests conflict with professional responsibilities.</p>
+                        <p>Examples:</p>
+                        <ul>
+                            <li>Using your position to secure special treatment for family or friends</li>
+                            <li>Accepting gifts or favors that might influence business decisions</li>
+                            <li>Doing business with relatives or friends without disclosing the relationship</li>
+                            <li>Allowing personal relationships to interfere with fair assessment or decision-making</li>
+                        </ul>
+                        <p>This type of ethical dilemma requires recognizing potential conflicts and managing or avoiding them appropriately.</p>
+                    </div>
+                </div>
+                
+                <!-- F letter information -->
+                <div id="f-info" class="hidden">
+                    <h2 class="info-title">F - <span class="keyword fair-keyword">False</span> impressions</h2>
+                    <div class="info-content">
+                        <p>This involves giving or allowing <span class="keyword fair-keyword">false</span> impressions, misleading others or allowing them to form an incorrect understanding.</p>
+                        <p>Examples:</p>
+                        <ul>
+                            <li>Exaggerating product features or service capabilities</li>
+                            <li>Overstating qualifications or experience on a resume</li>
+                            <li>Making promises to clients or stakeholders that can't be fulfilled</li>
+                            <li>Failing to correct others' misunderstandings of a situation</li>
+                        </ul>
+                        <p>This type of ethical dilemma emphasizes the importance of honest and transparent communication.</p>
+                    </div>
+                </div>
+                
+                <!-- A1 letter information -->
+                <div id="a1-info" class="hidden">
+                    <h2 class="info-title">A - <span class="keyword fair-keyword">Acts</span> of personal decadence</h2>
+                    <div class="info-content">
+                        <p>This involves <span class="keyword fair-keyword">acts</span> that might damage personal or professional reputation.</p>
+                        <p>Examples:</p>
+                        <ul>
+                            <li>Excessive drinking in work environments</li>
+                            <li>Inappropriate behavior in professional settings</li>
+                            <li>Wasting resources or extravagant spending of company funds</li>
+                            <li>Engaging in non-work-related activities during work hours</li>
+                        </ul>
+                        <p>This type of ethical dilemma relates to self-discipline and professional behavior standards.</p>
+                    </div>
+                </div>
+                
+                <!-- I letter information -->
+                <div id="i-info" class="hidden">
+                    <h2 class="info-title">I - <span class="keyword fair-keyword">Interpersonal</span> abuse</h2>
+                    <div class="info-content">
+                        <p>This includes any form of <span class="keyword fair-keyword">interpersonal</span> harassment, bullying, or disrespectful behavior toward others.</p>
+                        <p>Examples:</p>
+                        <ul>
+                            <li>Workplace harassment or bullying</li>
+                            <li>Discriminatory language or behavior</li>
+                            <li>Using threats or intimidation</li>
+                            <li>Disrespecting others' boundaries in professional environments</li>
+                        </ul>
+                        <p>This type of ethical dilemma involves respect, dignity, and maintaining a safe, inclusive environment.</p>
+                    </div>
+                </div>
+                
+                <!-- R letter information -->
+                <div id="r-info" class="hidden">
+                    <h2 class="info-title">R - <span class="keyword fair-keyword">Rules</span> violations</h2>
+                    <div class="info-content">
+                        <p>This involves violating established <span class="keyword fair-keyword">rules</span>, policies, or laws.</p>
+                        <p>Examples:</p>
+                        <ul>
+                            <li>Breaking company policies or procedures</li>
+                            <li>Ignoring safety regulations</li>
+                            <li>Violating laws or industry norms</li>
+                            <li>Disregarding or circumventing compliance requirements</li>
+                        </ul>
+                        <p>This type of ethical dilemma emphasizes the importance of following rules and regulations, even when it might cause short-term inconvenience or cost.</p>
+                    </div>
+                </div>
+                
+                <!-- P letter information -->
+                <div id="p-info" class="hidden">
+                    <h2 class="info-title">P - <span class="keyword pact-keyword">Permitting</span> organizational abuse</h2>
+                    <div class="info-content">
+                        <p>This involves <span class="keyword pact-keyword">permitting</span> or tolerating unethical behavior within an organization.</p>
+                        <p>Examples:</p>
+                        <ul>
+                            <li>Turning a blind eye to misconduct</li>
+                            <li>Failing to report known violations</li>
+                            <li>Tolerating unethical practices for organizational benefit</li>
+                            <li>Failing to correct harmful organizational cultures or practices</li>
+                        </ul>
+                        <p>This type of ethical dilemma emphasizes that everyone has a responsibility to uphold ethical standards in an organization.</p>
+                    </div>
+                </div>
+                
+                <!-- A2 letter information -->
+                <div id="a2-info" class="hidden">
+                    <h2 class="info-title">A - <span class="keyword pact-keyword">Aren't</span> true</h2>
+                    <div class="info-content">
+                        <p>This involves deliberately saying things that <span class="keyword pact-keyword">aren't</span> true or making false statements.</p>
+                        <p>Examples:</p>
+                        <ul>
+                            <li>Providing false information in reports</li>
+                            <li>Lying to clients or colleagues</li>
+                            <li>Falsely reporting time, expenses, or resource usage</li>
+                            <li>Making promises or assertions known to be untrue</li>
+                        </ul>
+                        <p>This type of ethical dilemma directly involves the basic values of honesty and truthfulness.</p>
+                    </div>
+                </div>
+                
+                <!-- C letter information -->
+                <div id="c-info" class="hidden">
+                    <h2 class="info-title">C - <span class="keyword pact-keyword">Condoning</span> unethical actions</h2>
+                    <div class="info-content">
+                        <p>This includes accepting, supporting, or <span class="keyword pact-keyword">condoning</span> actions known to be wrong.</p>
+                        <p>Examples:</p>
+                        <ul>
+                            <li>Remaining silent about a colleague's unethical behavior</li>
+                            <li>Making excuses or rationalizations for improper actions</li>
+                            <li>Participating in cover-ups of mistakes or violations</li>
+                            <li>Encouraging or rewarding problematic behavior</li>
+                        </ul>
+                        <p>This type of ethical dilemma reminds us that inaction is also a choice, and may enable unethical behavior.</p>
+                    </div>
+                </div>
+                
+                <!-- T2 letter information -->
+                <div id="t2-info" class="hidden">
+                    <h2 class="info-title">T - <span class="keyword pact-keyword">Taking</span> unfair advantage</h2>
+                    <div class="info-content">
+                        <p>This involves <span class="keyword pact-keyword">taking</span> advantage of unequal power or information to gain an improper advantage.</p>
+                        <p>Examples:</p>
+                        <ul>
+                            <li>Using inside information for personal investments</li>
+                            <li>Exploiting others' vulnerabilities or ignorance</li>
+                            <li>Abusing power or position for personal gain</li>
+                            <li>Exploiting situations or people for improper advantage</li>
+                        </ul>
+                        <p>This type of ethical dilemma emphasizes the importance of fair competition and respecting equal opportunity.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Get all node elements
+        const mainNode = document.getElementById('main-node');
+        const theNode = document.getElementById('the-node');
+        const fairNode = document.getElementById('fair-node');
+        const pactNode = document.getElementById('pact-node');
+        const mindmap = document.getElementById('mindmap');
+        
+        // THE group letter nodes
+        const tNode = document.getElementById('t-node');
+        const hNode = document.getElementById('h-node');
+        const eNode = document.getElementById('e-node');
+        
+        // FAIR group letter nodes
+        const fNode = document.getElementById('f-node');
+        const a1Node = document.getElementById('a1-node');
+        const iNode = document.getElementById('i-node');
+        const rNode = document.getElementById('r-node');
+        
+        // PACT group letter nodes
+        const pNode = document.getElementById('p-node');
+        const a2Node = document.getElementById('a2-node');
+        const cNode = document.getElementById('c-node');
+        const t2Node = document.getElementById('t2-node');
+        
+        // Get SVG paths
+        const mainToThe = document.getElementById('main-to-the');
+        const mainToFair = document.getElementById('main-to-fair');
+        const mainToPact = document.getElementById('main-to-pact');
+        
+        const theToT = document.getElementById('the-to-t');
+        const theToH = document.getElementById('the-to-h');
+        const theToE = document.getElementById('the-to-e');
+        
+        const fairToF = document.getElementById('fair-to-f');
+        const fairToA1 = document.getElementById('fair-to-a1');
+        const fairToI = document.getElementById('fair-to-i');
+        const fairToR = document.getElementById('fair-to-r');
+        
+        const pactToP = document.getElementById('pact-to-p');
+        const pactToA2 = document.getElementById('pact-to-a2');
+        const pactToC = document.getElementById('pact-to-c');
+        const pactToT2 = document.getElementById('pact-to-t2');
+        
+        // Get info panels
+        const mainInfo = document.getElementById('main-info');
+        const theInfo = document.getElementById('the-info');
+        const fairInfo = document.getElementById('fair-info');
+        const pactInfo = document.getElementById('pact-info');
+        
+        const tInfo = document.getElementById('t-info');
+        const hInfo = document.getElementById('h-info');
+        const eInfo = document.getElementById('e-info');
+        const fInfo = document.getElementById('f-info');
+        const a1Info = document.getElementById('a1-info');
+        const iInfo = document.getElementById('i-info');
+        const rInfo = document.getElementById('r-info');
+        const pInfo = document.getElementById('p-info');
+        const a2Info = document.getElementById('a2-info');
+        const cInfo = document.getElementById('c-info');
+        const t2Info = document.getElementById('t2-info');
+        
+        // Reset button
+        const resetBtn = document.getElementById('reset-btn');
+        
+        // Draw curved path
+        function drawCurvePath(startNode, endNode, path) {
+            const container = document.querySelector('.mindmap-container');
+            const containerRect = container.getBoundingClientRect();
+            
+            const startRect = startNode.getBoundingClientRect();
+            const endRect = endNode.getBoundingClientRect();
+            
+            // Calculate coordinates relative to container
+            const startX = startRect.left + startRect.width/2 - containerRect.left;
+            const startY = startRect.top + startRect.height/2 - containerRect.top;
+            const endX = endRect.left + endRect.width/2 - containerRect.left;
+            const endY = endRect.top + endRect.height/2 - containerRect.top;
+            
+            // Calculate control points based on node positions
+            const dx = Math.abs(endX - startX) * 0.5;
+            const dy = Math.abs(endY - startY) * 0.2;
+            
+            let controlX1, controlY1, controlX2, controlY2;
+            
+            // Determine control points based on relative node positions
+            if (startX < endX) {
+                // Left to right
+                controlX1 = startX + dx;
+                controlY1 = startY;
+                controlX2 = endX - dx;
+                controlY2 = endY;
+            } else {
+                // Right to left
+                controlX1 = startX - dx;
+                controlY1 = startY;
+                controlX2 = endX + dx;
+                controlY2 = endY;
+            }
+            
+            // Adjust control points for smoother curves
+            if (Math.abs(startY - endY) > 50) {
+                if (startY < endY) {
+                    controlY1 = startY + dy;
+                    controlY2 = endY - dy;
+                } else {
+                    controlY1 = startY - dy;
+                    controlY2 = endY + dy;
+                }
+            }
+            
+            // Set SVG path
+            const d = `M ${startX},${startY} C ${controlX1},${controlY1} ${controlX2},${controlY2} ${endX},${endY}`;
+            path.setAttribute('d', d);
+        }
+        
+        // Hide all info panels
+        function hideAllInfo() {
+            mainInfo.classList.add('hidden');
+            theInfo.classList.add('hidden');
+            fairInfo.classList.add('hidden');
+            pactInfo.classList.add('hidden');
+            
+            tInfo.classList.add('hidden');
+            hInfo.classList.add('hidden');
+            eInfo.classList.add('hidden');
+            fInfo.classList.add('hidden');
+            a1Info.classList.add('hidden');
+            iInfo.classList.add('hidden');
+            rInfo.classList.add('hidden');
+            pInfo.classList.add('hidden');
+            a2Info.classList.add('hidden');
+            cInfo.classList.add('hidden');
+            t2Info.classList.add('hidden');
+        }
+        
+        // Initialize - show main info panel
+        hideAllInfo();
+        mainInfo.classList.remove('hidden');
+        
+        // Hide all letter nodes
+        function hideAllLetterNodes() {
+            tNode.classList.remove('active');
+            hNode.classList.remove('active');
+            eNode.classList.remove('active');
+            fNode.classList.remove('active');
+            a1Node.classList.remove('active');
+            iNode.classList.remove('active');
+            rNode.classList.remove('active');
+            pNode.classList.remove('active');
+            a2Node.classList.remove('active');
+            cNode.classList.remove('active');
+            t2Node.classList.remove('active');
+            
+            theToT.classList.remove('active');
+            theToH.classList.remove('active');
+            theToE.classList.remove('active');
+            fairToF.classList.remove('active');
+            fairToA1.classList.remove('active');
+            fairToI.classList.remove('active');
+            fairToR.classList.remove('active');
+            pactToP.classList.remove('active');
+            pactToA2.classList.remove('active');
+            pactToC.classList.remove('active');
+            pactToT2.classList.remove('active');
+        }
+        
+        // Hide all group nodes
+        function hideAllGroupNodes() {
+            theNode.classList.remove('active');
+            fairNode.classList.remove('active');
+            pactNode.classList.remove('active');
+            
+            mainToThe.classList.remove('active');
+            mainToFair.classList.remove('active');
+            mainToPact.classList.remove('active');
+            
+            mainNode.classList.remove('shifted');
+        }
+        
+        // Reset mind map
+        function resetMindmap() {
+            hideAllInfo();
+            hideAllLetterNodes();
+            hideAllGroupNodes();
+            mainInfo.classList.remove('hidden');
+        }
+        
+        // Click on main node, expand groups
+        mainNode.addEventListener('click', function() {
+            hideAllInfo();
+            hideAllLetterNodes();
+            
+            // Move main node to the left
+            mainNode.classList.add('shifted');
+            
+            // Show group nodes
+            theNode.classList.add('active');
+            fairNode.classList.add('active');
+            pactNode.classList.add('active');
+            
+            // Show connectors
+            mainToThe.classList.add('active');
+            mainToFair.classList.add('active');
+            mainToPact.classList.add('active');
+            
+            // Draw curves
+            setTimeout(() => {
+                drawCurvePath(mainNode, theNode, mainToThe);
+                drawCurvePath(mainNode, fairNode, mainToFair);
+                drawCurvePath(mainNode, pactNode, mainToPact);
+            }, 500);
+            
+            // Show main info
+            mainInfo.classList.remove('hidden');
+        });
+        
+        // Click on THE group, expand letters
+        theNode.addEventListener('click', function() {
+            hideAllInfo();
+            hideAllLetterNodes();
+            
+            // Show THE letters
+            tNode.classList.add('active');
+            hNode.classList.add('active');
+            eNode.classList.add('active');
+            
+            // Show connectors
+            theToT.classList.add('active');
+            theToH.classList.add('active');
+            theToE.classList.add('active');
+            
+            // Draw curves
+            setTimeout(() => {
+                drawCurvePath(theNode, tNode, theToT);
+                drawCurvePath(theNode, hNode, theToH);
+                drawCurvePath(theNode, eNode, theToE);
+            }, 100);
+            
+            // Show THE info
+            theInfo.classList.remove('hidden');
+        });
+        
+        // Click on FAIR group, expand letters
+        fairNode.addEventListener('click', function() {
+            hideAllInfo();
+            hideAllLetterNodes();
+            
+            // Show FAIR letters
+            fNode.classList.add('active');
+            a1Node.classList.add('active');
+            iNode.classList.add('active');
+            rNode.classList.add('active');
+            
+            // Show connectors
+            fairToF.classList.add('active');
+            fairToA1.classList.add('active');
+            fairToI.classList.add('active');
+            fairToR.classList.add('active');
+            
+            // Draw curves
+            setTimeout(() => {
+                drawCurvePath(fairNode, fNode, fairToF);
+                drawCurvePath(fairNode, a1Node, fairToA1);
+                drawCurvePath(fairNode, iNode, fairToI);
+                drawCurvePath(fairNode, rNode, fairToR);
+            }, 100);
+            
+            // Show FAIR info
+            fairInfo.classList.remove('hidden');
+        });
+        
+        // Click on PACT group, expand letters
+        pactNode.addEventListener('click', function() {
+            hideAllInfo();
+            hideAllLetterNodes();
+            
+            // Show PACT letters
+            pNode.classList.add('active');
+            a2Node.classList.add('active');
+            cNode.classList.add('active');
+            t2Node.classList.add('active');
+            
+            // Show connectors
+            pactToP.classList.add('active');
+            pactToA2.classList.add('active');
+            pactToC.classList.add('active');
+            pactToT2.classList.add('active');
+            
+            // Draw curves
+            setTimeout(() => {
+                drawCurvePath(pactNode, pNode, pactToP);
+                drawCurvePath(pactNode, a2Node, pactToA2);
+                drawCurvePath(pactNode, cNode, pactToC);
+                drawCurvePath(pactNode, t2Node, pactToT2);
+            }, 100);
+            
+            // Show PACT info
+            pactInfo.classList.remove('hidden');
+        });
+        
+        // Letter click events
+        tNode.addEventListener('click', function() {
+            hideAllInfo();
+            tInfo.classList.remove('hidden');
+        });
+        
+        hNode.addEventListener('click', function() {
+            hideAllInfo();
+            hInfo.classList.remove('hidden');
+        });
+        
+        eNode.addEventListener('click', function() {
+            hideAllInfo();
+            eInfo.classList.remove('hidden');
+        });
+        
+        fNode.addEventListener('click', function() {
+            hideAllInfo();
+            fInfo.classList.remove('hidden');
+        });
+        
+        a1Node.addEventListener('click', function() {
+            hideAllInfo();
+            a1Info.classList.remove('hidden');
+        });
+        
+        iNode.addEventListener('click', function() {
+            hideAllInfo();
+            iInfo.classList.remove('hidden');
+        });
+        
+        rNode.addEventListener('click', function() {
+            hideAllInfo();
+            rInfo.classList.remove('hidden');
+        });
+        
+        pNode.addEventListener('click', function() {
+            hideAllInfo();
+            pInfo.classList.remove('hidden');
+        });
+        
+        a2Node.addEventListener('click', function() {
+            hideAllInfo();
+            a2Info.classList.remove('hidden');
+        });
+        
+        cNode.addEventListener('click', function() {
+            hideAllInfo();
+            cInfo.classList.remove('hidden');
+        });
+        
+        t2Node.addEventListener('click', function() {
+            hideAllInfo();
+            t2Info.classList.remove('hidden');
+        });
+        
+        // Reset button
+        resetBtn.addEventListener('click', resetMindmap);
+        
+        // Window resize handler
+        window.addEventListener('resize', function() {
+            if (mainNode.classList.contains('shifted')) {
+                drawCurvePath(mainNode, theNode, mainToThe);
+                drawCurvePath(mainNode, fairNode, mainToFair);
+                drawCurvePath(mainNode, pactNode, mainToPact);
+            }
+            
+            if (theToT.classList.contains('active')) {
+                drawCurvePath(theNode, tNode, theToT);
+                drawCurvePath(theNode, hNode, theToH);
+                drawCurvePath(theNode, eNode, theToE);
+            }
+            
+            if (fairToF.classList.contains('active')) {
+                drawCurvePath(fairNode, fNode, fairToF);
+                drawCurvePath(fairNode, a1Node, fairToA1);
+                drawCurvePath(fairNode, iNode, fairToI);
+                drawCurvePath(fairNode, rNode, fairToR);
+            }
+            
+            if (pactToP.classList.contains('active')) {
+                drawCurvePath(pactNode, pNode, pactToP);
+                drawCurvePath(pactNode, a2Node, pactToA2);
+                drawCurvePath(pactNode, cNode, pactToC);
+                drawCurvePath(pactNode, t2Node, pactToT2);
+            }
+        });
+        
+        // Check for mobile device and add appropriate settings
+        function checkMobileDevice() {
+            const isMobile = window.innerWidth <= 900;
+            if (isMobile) {
+                // Additional adjustments for mobile devices
+                document.querySelector('.mindmap').style.transformOrigin = 'center center';
+            }
+        }
+        
+        // Check device on initialization
+        window.addEventListener('load', checkMobileDevice);
+        // Recheck on window resize
+        window.addEventListener('resize', checkMobileDevice);
+    </script>
+</body>
+</html>
